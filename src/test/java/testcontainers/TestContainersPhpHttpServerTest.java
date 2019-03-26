@@ -23,7 +23,7 @@ public class TestContainersPhpHttpServerTest {
 
     @Before
     public void setUp() {
-        dslContainer = new GenericContainer(
+        dslContainer = new GenericContainer(//"tcdockerfile/php")
                 new ImageFromDockerfile("tcdockerfile/php", true).withDockerfileFromBuilder(builder -> {
                     builder
                             .from("php:7.2-apache")
