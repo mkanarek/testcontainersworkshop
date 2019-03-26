@@ -6,6 +6,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.images.builder.ImageFromDockerfile;
 
 import static com.jayway.restassured.RestAssured.given;
+import static org.junit.Assert.assertTrue;
 
 public class TestContainersTest {
 
@@ -29,6 +30,6 @@ public class TestContainersTest {
     public void simpleDslTest() {
         String address = String.format("http://%s:%s", dslContainer.getContainerIpAddress(), dslContainer.getMappedPort(80));
 
-        given().when().get(address).then().statusCode(200);
+        assertTrue("Status code is not 200",given().when().get(address).statusCode() == 200);
     }
 }
