@@ -20,10 +20,11 @@ class MysqlCon {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://"+address, user, password);
-
+            LOGGER.info("JDBC driver reached");
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from "+ tableName);
             int numCols = rs.getMetaData().getColumnCount();
+            LOGGER.info("Query done");
             while(rs.next()) {
                 StringBuilder sb = new StringBuilder();
 
