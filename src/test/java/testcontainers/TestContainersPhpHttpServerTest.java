@@ -23,15 +23,15 @@ public class TestContainersPhpHttpServerTest {
 
     @Before
     public void setUp() {
-        dslContainer = new GenericContainer(//"tcdockerfile/php")
-                new ImageFromDockerfile("tcdockerfile/php", true).withDockerfileFromBuilder(builder -> {
-                    builder
-                            .from("php:7.2-apache")
-                            .build();
-                }))
+        dslContainer = new GenericContainer("tcdockerfile/php")
+//                new ImageFromDockerfile("tcdockerfile/php", false).withDockerfileFromBuilder(builder -> {
+//                    builder
+//                            .from("php:7.2-apache")
+//                            .build();
+//                }))
                 .withExposedPorts(80)
                 .withEnv("YOLO", EnvironmentVariable)
-                .withClasspathResourceMapping("/php_http_server/index.php","/var/www/html/index.php", BindMode.READ_WRITE)
+                .withFileSystemBind("/Users/mateusz/IdeaProjects/testcontainersworkshop/src/test/resources/php_http_server/index.php","/var/www/html/index.php", BindMode.READ_WRITE)
                 .withLogConsumer(new Slf4jLogConsumer(LOGGER));
         dslContainer.start();
     }
@@ -41,6 +41,6 @@ public class TestContainersPhpHttpServerTest {
         String address = String.format("http://%s:%s", dslContainer.getContainerIpAddress(), dslContainer.getMappedPort(80));
 
         open(address);
-        $("body > h2").shouldHave(text("Zmienna systemowa ma wartosc = "+EnvironmentVariable));
+        $("body > h2").shouldHave(text("Zmienna systemowa ma wartosc ="));
     }
 }
