@@ -46,10 +46,12 @@ public class TestContainersTestDataBase {
                             .env("MYSQL_ROOT_PASSWORD", "rootadmin")
                             .copy("/tmp/foo", "/docker-entrypoint-initdb.d")
                             .build();
-                }).withFileFromFile("/tmp/foo",directory))
+                })
+                        .withFileFromFile("/tmp/foo",directory))
                 .withNetwork(network)
                 .withNetworkAliases("dbhost")
                 .waitingFor(Wait.forListeningPort())
+                .withClasspathResourceMapping("/database_scripts","/docker-entrypoint-initdb.d",BindMode.READ_ONLY)
 //                .withExposedPorts(3306)
 //        )
 //                .withEnv("MYSQL_DATABASE", "testBase")
@@ -70,8 +72,8 @@ public class TestContainersTestDataBase {
             e.printStackTrace();
         }
         String temDirPath = tempDir.toString() + File.separator;
-//        String address = String.format("%s:%s", dslContainer.getContainerIpAddress(), dslContainer.getMappedPort(3306));
-//        System.out.println("Address is "+ address);
+        String address = String.format("%s:%s", dslContainer.getContainerIpAddress(), dslContainer.getMappedPort(3306));
+        System.out.println("Address is "+ address);
         try {
             Thread.sleep(30000);
         } catch (InterruptedException e) {

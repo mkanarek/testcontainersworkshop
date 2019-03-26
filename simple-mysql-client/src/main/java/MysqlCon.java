@@ -13,10 +13,10 @@ class MysqlCon {
     public static void main(String args[]) {
         try {
             List<String> resultSetArray=new ArrayList<>();
-            String address = args[0];
-            String user = args[1];
-            String password = args[2];
-            String tableName = args[3];
+            String address = "localhost:32843/testBase";//args[0];
+            String user = "testUser";//args[1];
+            String password = "admin";//args[2];
+            String tableName = "trackingtype";//args[3];
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://"+address, user, password);
