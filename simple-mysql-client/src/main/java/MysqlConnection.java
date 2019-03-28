@@ -6,17 +6,23 @@ import java.io.FileWriter;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-class MysqlCon {
-    private static Logger LOGGER = LoggerFactory.getLogger("MysqlCon");
+class MysqlConnection {
+    private static Logger LOGGER = LoggerFactory.getLogger("MysqlConnection");
+
+    public static String getRootPath() {
+        String returnString = Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource(".")).getPath();
+        return returnString;
+    }
 
     public static void main(String args[]) {
         try {
             List<String> resultSetArray=new ArrayList<>();
-            String address = "localhost:32843/testBase";//args[0];
-            String user = "testUser";//args[1];
-            String password = "admin";//args[2];
-            String tableName = "trackingtype";//args[3];
+            String address = args[0];
+            String user = args[1];
+            String password = args[2];
+            String tableName = args[3];
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://"+address, user, password);
@@ -29,14 +35,14 @@ class MysqlCon {
                 StringBuilder sb = new StringBuilder();
 
                 for (int i = 1; i <= numCols; i++) {
-                    sb.append(String.format(String.valueOf(rs.getString(i))) + " ");
+                    sb.append(String.format(String.valueOf(rs.getString(i))));
 
                 }
                 resultSetArray.add(sb.toString());
 
             }
-
-            File csvOutputFile = new File("/home/data/tableData.txt");
+            LOGGER.info("Start saving data");
+            File csvOutputFile = new File(getRootPath()+"/data/tableData.txt");
             FileWriter fileWriter = new FileWriter(csvOutputFile, false);
 
 
@@ -46,8 +52,9 @@ class MysqlCon {
 
             fileWriter.close();
             con.close();
+            LOGGER.info("Data saved");
         } catch (Exception e) {
-            LOGGER.error("Error from client" + e.getMessage());
+            LOGGER.error("Error from client " + e.getMessage());
         }
     }
 }
